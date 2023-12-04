@@ -1,137 +1,74 @@
-include <stdio.h>
-#include <stdlib.h>
 
-struct Node {
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
     int data;
-    struct Node* next;
+    struct node* next;
 };
+struct node* top=0;
 
-struct Stack {
-    struct Node* top;
-};
-
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode == NULL) {
-        printf("Memory allocation failed\n");
-        exit(1);
+struct node* createNode(int value){
+    struct node* newnode=(struct node*)malloc(sizeof(struct node));
+    if (newnode==NULL){
+        printf("Underflow");
     }
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
-}
-
-struct Stack* initializeStack() {
-    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
-    if (stack == NULL) {
-        printf("Memory allocation failed\n");
-        exit(1);
+    else{
+        newnode->data=value;
+        newnode->next=top;
     }
-    stack->top = NULL;
-    return stack;
+    return newnode;
 }
-
-int isEmpty(struct Stack* stack) {
-    return (stack->top == NULL);
+void push(int value){
+    struct node* newnode= createNode(value);
+    top=newnode;
+    
 }
-
-void push(struct Stack* stack, int data) {
-    struct Node* newNode = createNode(data);
-    newNode->next = stack->top;
-    stack->top = newNode;
-}
-
-int pop(struct Stack* stack) {
-    if (isEmpty(stack)) {
-        printf("Stack is empty\n");
-        exit(1);
+void pop(){
+    struct node* temp=top;
+    if(top==0){
+        printf("Stack is empty, unable to pop");
     }
-    struct Node* temp = stack->top;
-    int data = temp->data;
-    stack->top = stack->top->next;
+    else{
+    printf("popped element is %d",top->data);
+    top=top->next;
     free(temp);
-    return data;
+    }
 }
 
-int linearSearch(struct Stack* stack, int target) {
-    struct Node* current = stack->top;
-    int position = 1;
-
-    while (current != NULL) {
-        if (current->data == target) {
-            return position;
-        }
-        current = current->next;
-        position++;
+void display (){
+   struct node* temp=top;
+    while(temp!= 0){
+        printf("%d ",temp->data);
+        temp=temp->next;
     }
-
-    return -1;
 }
-
-void displayStack(struct Stack* stack) {
-    printf("Stack: ");
-    struct Node* current = stack->top;
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->next;
+int main()
+{
+ int choice,value ;
+  do{
+    printf("Select \n");
+    printf("1. Push\n2. Pop\n3. Display\n4. Search\n0. Exit\n");
+    printf("Enter your choice : ");
+    scanf("%d",& choice);
+    switch( choice){
+     case 1:
+         printf("Enter value to push");
+         scanf("%d",&value);
+         push(value);
+         break;
+     case 2:
+         pop();
+         break;
+     case 3:
+         display();        
+         break;
+     case 4:
+         //search ();      
+         break;
+     case 0:
+         exit(0);  
     }
-    printf("\n");
-}
-
-int main() {
-    struct Stack* stack = initializeStack();
-    int value, position, target;
-
-    while (1) {
-        printf("\n**********MENU**********\n");
-        printf("1. Push\n");
-        printf("2. Pop\n");
-        printf("3. Linear Search\n");
-        printf("4. Display Stack\n");
-        printf("5. Quit\n");
-        printf("\n************************\n");
-
-        printf("Enter your choice: ");
-        int choice;
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-                printf("Enter the value to push: ");
-                scanf("%d", &value);
-                push(stack, value);
-                break;
-            case 2:
-                if (!isEmpty(stack)) {
-                    printf("Popped: %d\n", pop(stack));
-                } else {
-                    printf("Stack is empty\n");
-                }
-                break;
-            case 3:
-                printf("Enter the target value to search: ");
-                scanf("%d", &target);
-                position = linearSearch(stack, target);
-                if (position != -1) {
-                    printf("%d found at position %d\n", target, position);
-                } else {
-                    printf("%d not found in the stack\n", target);
-                }
-                break;
-            case 4:
-                displayStack(stack);
-                break;
-            case 5:
-                exit(0);
-            default:
-                printf("Invalid choice\n");
-        }
-    }
-
+    }while(choice!= 0);
+    
     return 0;
 }
-
-
-
-
-
