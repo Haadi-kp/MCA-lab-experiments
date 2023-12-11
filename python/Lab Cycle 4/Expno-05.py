@@ -1,19 +1,13 @@
-def add_integers(*args):
-    """
-    Adds variable-length integer arguments.
 
-    Parameters:
-    *args (int): Variable number of integer arguments.
+def add_num(*args):
+	"""
+	This function uses variable length 
+	argument.
+	"""
+	return sum(args)
 
-    Returns:
-    int: Sum of the integer arguments.
-    """
-    total = 0
-    for num in args:
-        if isinstance(num, int):
-            total += num
-        else:
-            raise TypeError("Arguments must be integers.")
-    return total
-result = add_integers(1, 2, 3, 4, 5)
-print(f"Result: {result}")
+lst= input("Enter integers (comma separated) : ").split(",")
+lst= [int(num) for num in lst ]
+result = add_num(*lst)
+
+print("The sum of the integers is: ",result)
